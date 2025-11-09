@@ -1,0 +1,503 @@
+:root {
+  --bg-1: #0b0c0f;
+  --bg-2: #121216;
+  --glass: rgba(255, 255, 255, 0.04);
+  --accent: #1DB954;
+  --accent-2: #1ED760;
+  --muted: #9aa0a6;
+  --card: #0f1114;
+  --success: #6bffb1;
+  --danger: #ff6b6b;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-1: 0 10px 30px rgba(2, 6, 23, 0.6);
+  --soft: 200ms cubic-bezier(.2, .9, .2, 1);
+  --soft-long: 350ms cubic-bezier(.2, .9, .2, 1);
+  --control-size: 48px;
+  --control-font: 16px;
+}
+
+* {
+  box-sizing: border-box
+}
+
+html,
+body {
+  height: 100%
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(29, 185, 84, 0.04), transparent 5%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2) 70%);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 28px;
+}
+
+.player-shell {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  padding: 22px;
+  box-shadow: var(--shadow-1);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 18px;
+  align-items: start;
+}
+
+*:focus {
+  outline: 2px solid rgba(29, 185, 84, 0.14);
+  outline-offset: 3px;
+  border-radius: 7px;
+}
+
+/* mobile: stack */
+@media (max-width:880px) {
+  .player-shell {
+    grid-template-columns: 1fr;
+    padding: 18px;
+    gap: 14px;
+  }
+}
+
+/* LEFT: video + timeline */
+.stage {
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.45));
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.video-wrap {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+  background: #000;
+  position: relative;
+}
+
+video#player {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #000;
+}
+
+/* Right: controls panel */
+.controls-panel {
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.center {
+  justify-content: center
+}
+
+.spaced {
+  justify-content: space-between
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+/* =========================
+     METADATA / FILE
+     ========================= */
+.file-upload {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color: #01110a;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 8px 20px rgba(29, 185, 84, 0.15), 0 2px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--soft), box-shadow var(--soft);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(.997)
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.file-name {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+     PLAY CONTROLS (big)
+     ========================= */
+.big-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.control {
+  width: var(--control-size);
+  height: var(--control-size);
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  transition: transform var(--soft), background var(--soft), box-shadow var(--soft);
+  font-size: 18px;
+}
+
+.control:hover {
+  transform: translateY(-6px) scale(1.03)
+}
+
+.control.primary {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  font-size: 26px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color: #03130a;
+  box-shadow: 0 12px 30px rgba(29, 185, 84, 0.16);
+}
+
+.small {
+  width: 44px;
+  height: 44px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+/* =========================
+     TIMELINE
+     ========================= */
+.timeline {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.time {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 50px;
+  text-align: center;
+}
+
+input[type="range"].seek {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  outline: none;
+  flex: 1;
+  transition: box-shadow var(--soft);
+}
+
+input[type="range"].seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.18);
+  transition: transform .12s;
+}
+
+input[type="range"].seek:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+/* =========================
+VOLUME + SMALL CTLS
+========================= */
+.volume-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input[type="range"].vol {
+  width: 120px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+input[type="range"].vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* =========================
+RIGHT PANEL CONTENT STYLING
+========================= */
+.controls-panel .section-title {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.controls-panel button.action {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  color: #e7f5ea;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all var(--soft);
+}
+
+.controls-panel .compact {
+  display: flex;
+  gap: 8px;
+}
+
+/* =========================
+     OVERLAY (IMPROVED) - replacing only overlay visuals but now integrated)
+     ========================= */
+#overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  pointer-events: none;
+  /* enabled when visible */
+}
+
+#overlay.active {
+  display: flex;
+  pointer-events: auto;
+  animation: overlayIn .28s ease forwards;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+    transform: scale(.98)
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1)
+  }
+}
+
+/* fancy card inside overlay */
+.overlay-card {
+  width: min(860px, 92%);
+  max-width: 860px;
+  border-radius: 20px;
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(2, 6, 10, 0.85), rgba(2, 6, 10, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 40px 80px rgba(2, 6, 10, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay-card .left {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.drop-graphic {
+  width: 120px;
+  height: 120px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.12), rgba(29, 185, 84, 0.06));
+  border: 1px solid rgba(29, 185, 84, 0.12);
+  box-shadow: 0 10px 30px rgba(29, 185, 84, 0.06);
+  transform-origin: center;
+  animation: dropBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes dropBounce {
+  0% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(6px)
+  }
+
+  100% {
+    transform: translateY(0)
+  }
+}
+
+.drop-graphic .icon {
+  font-size: 42px;
+  color: var(--accent-2);
+  filter: drop-shadow(0 8px 26px rgba(29, 185, 84, 0.18));
+}
+
+.overlay-info .title {
+  color: #e8ffea;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.overlay-info .sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.overlay-actions .hint {
+  font-size: 13px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.overlay-accept {
+  outline: 2px solid rgba(29, 185, 84, 0.12);
+  box-shadow: 0 18px 60px rgba(29, 185, 84, 0.06);
+}
+
+/* shimmer stripe (diagonal) */
+.overlay-card::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  transform: rotate(12deg);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.06) 45%, rgba(255, 255, 255, 0.02) 70%, transparent 100%);
+  animation: overlayShimmer 1.6s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes overlayShimmer {
+  to {
+    transform: translateX(30%) rotate(12deg)
+  }
+}
+
+/* small helper */
+.muted-small {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* accessibility focus */
+.control:focus,
+.btn:focus,
+.action:focus {
+  outline: 2px solid rgba(29, 185, 84, 0.14);
+  outline-offset: 3px;
+}
+
+/* tiny responsive adjustments */
+@media (max-width:560px) {
+  .overlay-card {
+    padding: 18px;
+    gap: 12px
+  }
+
+  .drop-graphic {
+    width: 86px;
+    height: 86px
+  }
+
+  .drop-graphic .icon {
+    font-size: 36px
+  }
+}
+
+#mute {
+  background-color: transparent;
+  border: none;
+}

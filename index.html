@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reproductor de Video Online - Version Beta</title>
+  <meta name="description" content="Reproductor de video online">
+  <meta name="theme-color" content="#323641" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <h1 style="display: none;">Reproductor de video online</h1>
+  <div class="player-shell" id="shell">
+    <div class="stage" id="stage">
+      <div class="video-wrap" id="videoWrap" aria-hidden="false">
+        <video id="player" playsinline></video>
+        <div id="emptyHint"
+          style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+          <div style="text-align:center;color:rgba(255,255,255,0.08);font-size:18px;">
+            Arrastra un video o usa "Elegir video"
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline" role="group" aria-label="Timeline">
+        <div class="time" id="current">00:00</div>
+        <input class="seek" id="seek" type="range" min="0" max="0" value="0" step="0.1"
+          aria-label="Barra de progreso"/>
+        <div class="time" id="total">00:00</div>
+      </div>
+
+      <div class="big-controls">
+        <button class="control small" id="back10" title="Atrás 10s (←)">↩10s</button>
+        <button class="control primary" id="playBtn" aria-pressed="false" title="Play/Pausa (Espacio)">▶</button>
+        <button class="control small" id="fwd10" title="Adelante 10s (→)">10s↪</button>
+
+        <div style="width:12px"></div>
+
+        <div class="volume-wrap muted-small">
+          <button id="mute" style="font-size:13px">🔊</button>
+          <input class="vol" id="vol" type="range" min="0" max="100" step="0.1" value="50" aria-label="Volumen" />
+          <span id="porsentOfVol"></span>
+        </div>
+      </div>
+    </div>
+
+    <aside aria-hidden="true" class="controls-panel" id="panel" aria-label="Controles">
+      <div class="file-upload row">
+        <label class="btn" for="fileInput" id="chooseBtn">📂 Elegir video</label>
+        <input style="display: none;" id="fileInput" type="file" accept="video/*" />
+        <div class="file-name" id="fileName">Sin archivo cargado</div>
+      </div>
+
+      <div class="stack">
+        <div class="row spaced">
+          <div class="meta">
+            <div style="font-weight:700">Reproductor</div>
+            <div style="margin-left:8px" class="muted-small">Local • privado</div>
+          </div>
+          <div class="meta small"><span id="durationText">Duración</span></div>
+        </div>
+
+        <div class="compact" style="display:flex;gap:8px">
+          <button class="action" id="downloadBtn">⬇ Descargar</button>
+          <button class="action" id="fullscreenBtn">⛶ Pantalla</button>
+          <button id="pipBtn" class="action"> Mini</button>
+        </div>
+      </div>
+
+      <div style="flex:1"></div>
+
+      <div class="stack">
+        <div class="section-title">Atajos</div>
+        <div class="muted-small">
+          Espacio: play/pause • ← →: ±10s • ↑ ↓: volumen • Enter: fullscreen • D: descargar • M: silenciar • P: Mini Ventana
+        </div>
+      </div>
+    </aside>
+
+    <div id="overlay" aria-hidden="true">
+      <div class="overlay-card" id="overlayCard" role="dialog" aria-label="Drag and drop">
+        <div class="left">
+          <div class="drop-graphic" id="dropGraphic" aria-hidden="true">
+            <div class="icon">📥</div>
+          </div>
+          <div class="overlay-info">
+            <div class="title" id="overlayTitle">Suelta tu video aquí</div>
+            <div class="sub" id="overlaySub">Soportado: MP4, WebM, MOV — suéltalo y lo reproducimos automáticamente
+            </div>
+            <div class="dz-hints">
+              <span class="kbd">⏎</span> fullscreen · <span class="kbd">D</span> descargar · <span class="kbd">␣</span>
+              reproducir
+            </div>
+          </div>
+        </div>
+
+        <div class="overlay-actions">
+          <div class="hint">Suelta para cargar</div>
+          <button class="btn ghost" id="overlayCancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
